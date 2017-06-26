@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "robinhood/tools"
+
+SOURCE_FILE = ARGV[0] || 'robinhood.csv'
+DESTINATION_FILE = ARGV[1] || nil
+
+puts "IN:  #{ SOURCE_FILE }"
+puts "OUT: #{ DESTINATION_FILE }"
+
+account = Robinhood::Account.parse('config.yaml')
+broker = Robinhood::Broker.parse('config.yaml')
+CUSIP = assets = Robinhood::AssetList.parse('config.yaml')
+document = Robinhood::Document.parse(account, broker, SOURCE_FILE)
+
+# Check if valid
+puts document.validate
+
+# Output
+if DESTINATION_FILE
+  File.write(DESTINATION_FILE, document.to_xml)
+end
