@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Robinhood
   module Tools
 
@@ -11,7 +13,7 @@ module Robinhood
       end
 
       def self.parse(filename)
-        config = YAML.load_file(filename)['account']
+        config = ::YAML.load_file(filename)['account']
         new(config['id'], config['username'], config['currency'])
       end
     end

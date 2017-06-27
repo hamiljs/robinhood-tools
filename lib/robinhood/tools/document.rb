@@ -68,11 +68,17 @@ module Robinhood
         @latest_trade_date ||= self.trade_dates.max
       end
 
-      def validate
-        missing_symbols = Set.new(@events.map(&:symbol)) - Set.new(CUSIP.keys)
+      def trade_events
+        @events.keep { |event| event.is_a?(Robinhood::Trade) }
+      end
 
-        if missing_symbols.any?
-          puts "Missing symbols: #{ missing_symbols.map(&:to_s).join(' ') }"
+      def missing_symbols
+        (Set.new(self.trade_events.map(&:symbol)) - Set.new(ASSETS.keys)).reject { |asset| asset.nil? }
+      end
+
+      def validate
+        if self.missing_symbols.any?
+          puts "Missing symbols: #{ self.missing_symbols.map(&:to_s).join(' ') }"
         end
       end
 
@@ -116,7 +122,7 @@ module Robinhood
         }
 
         # Security List
-        xml << OFX::SecurityList.new(CUSIP).to_xml
+        xml << OFX::SecurityList.new(ASSETS).to_xml
       end
 
     end # class Document

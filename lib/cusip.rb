@@ -9,24 +9,26 @@ module CUSIP
 
     # Download
     uri = "http://www.quantumonline.com/search.cfm?tickersymbol=#{ ticker }&sopt=symbol"
-    puts uri
     doc = Nokogiri::HTML(open(uri)) do |config|
       config.nonet
     end
 
     # Get asset name
-    name = doc.xpath("//table/tbody/tr/td/font[@size='+1']/center/b") #.first
+    name = doc.xpath('/html/body/font/table/tr/td[2]/center/b/text()')[0].to_s
 
-    # Get the CUSIP
-    # cusip = doc.xpath("//table/tbody/tr/td/font[@size='-1']/center/b")
+    # Get the ASSETS
+    cusip = doc.xpath('/html/body/font/table/tr/td[2]/center/b/text()')[1].to_s
+    if /ASSETS:\s*([A-Za-z0-9]{9})/ =~ cusip
+      cusip = $1
+    end
 
     # Compile and return response
     {
       name: name.strip,
-      cusip: cusip.strip,
+      cusip: cusip.strip.upcase,
       ticker: ticker
     }
 
   end
 
-end # CUSIP
+end # ASSETS

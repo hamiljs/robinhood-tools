@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require "bundler/setup"
-require "robinhood/tools"
+require "robinhood"
 
 SOURCE_FILE = ARGV[0] || 'robinhood.csv'
 DESTINATION_FILE = ARGV[1] || nil
@@ -9,10 +9,20 @@ DESTINATION_FILE = ARGV[1] || nil
 puts "IN:  #{ SOURCE_FILE }"
 puts "OUT: #{ DESTINATION_FILE }"
 
-account = Robinhood::Account.parse('config.yaml')
-broker = Robinhood::Broker.parse('config.yaml')
-CUSIP = assets = Robinhood::AssetList.parse('config.yaml')
-document = Robinhood::Document.parse(account, broker, SOURCE_FILE)
+account = Robinhood::Tools::Account.parse('config.yaml')
+broker = Robinhood::Tools::Broker.parse('config.yaml')
+ASSETS = assets = Robinhood::Tools::AssetList.parse('config.yaml')
+document = Robinhood::Tools::Document.parse(account, broker, SOURCE_FILE)
+
+# Download all missing CUSIPs
+document.missing_symbols.each do |symbol|
+  print "Looking up #{ symbol }... "
+  results = CUSIP.lookup(symbol)
+  File.write("assets/#{ symbol }.yaml", YAML::dump(results))
+  puts "ok"
+  exit
+  sleep 2
+end
 
 # Check if valid
 puts document.validate

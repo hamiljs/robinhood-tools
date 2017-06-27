@@ -39,7 +39,7 @@ module Robinhood
       end
 
       def asset
-        CUSIP[self.symbol]
+        ASSETS[self.symbol]
       end
 
     end

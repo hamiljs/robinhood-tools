@@ -8,3 +8,7 @@ require 'digest/sha1'
 
 # Tools
 require 'robinhood/tools'
+
+# Others
+require 'ofx'
+require 'cusip'
