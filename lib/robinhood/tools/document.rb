@@ -69,7 +69,7 @@ module Robinhood
       end
 
       def trade_events
-        @events.keep { |event| event.is_a?(Robinhood::Trade) }
+        @events.keep_if { |event| event.is_a?(Robinhood::Tools::Trade) }
       end
 
       def missing_symbols

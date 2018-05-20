@@ -4,7 +4,7 @@ require "bundler/setup"
 require "robinhood"
 
 SOURCE_FILE = ARGV[0] || 'robinhood.csv'
-DESTINATION_FILE = ARGV[1] || nil
+DESTINATION_FILE = ARGV[1] || 'robinhood.ofx'
 
 puts "IN:  #{ SOURCE_FILE }"
 puts "OUT: #{ DESTINATION_FILE }"
