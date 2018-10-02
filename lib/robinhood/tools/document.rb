@@ -119,10 +119,10 @@ module Robinhood
           # Investment Position List
 
           # Investment Balance
-        }
 
-        # Security List
-        xml << OFX::SecurityList.new(ASSETS).to_xml
+            # Security List
+            xml << OFX::SecurityList.new(ASSETS).to_xml
+        }
       end
 
     end # class Document
