@@ -90,6 +90,14 @@ module OFX
         xml.UNIQUEIDTYPE self.type
       }
     end
+
+    def self.with_cusip(cusip)
+        new(cusip, 'CUSIP'.freeze)
+    end
+
+    def self.with_ticker(ticker)
+        new(ticker, 'TICKER'.freeze)
+    end
   end
 
 end # module QFX

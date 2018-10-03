@@ -18,15 +18,15 @@ module CUSIP
 
     # Get the ASSETS
     cusip = doc.xpath('/html/body/font/table/tr/td[2]/center/b/text()')[1].to_s
-    if /ASSETS:\s*([A-Za-z0-9]{9})/ =~ cusip
+    if /CUSIP:\s*([A-Za-z0-9]{9})/ =~ cusip
       cusip = $1
     end
 
     # Compile and return response
     {
-      name: name.strip,
-      cusip: cusip.strip.upcase,
-      ticker: ticker
+      'name' => name.strip,
+      'cusip' => cusip.strip.upcase,
+      'symbol' => ticker
     }
 
   end

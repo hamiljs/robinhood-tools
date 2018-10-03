@@ -4,7 +4,7 @@ require "bundler/setup"
 require "robinhood"
 
 SOURCE_FILE = ARGV[0] || 'robinhood.csv'
-DESTINATION_FILE = ARGV[1] || 'robinhood.ofx'
+DESTINATION_FILE = ARGV[1] || File.basename(SOURCE_FILE, File.extname(SOURCE_FILE)) + '.ofx'
 
 puts "IN:  #{ SOURCE_FILE }"
 puts "OUT: #{ DESTINATION_FILE }"
@@ -20,14 +20,16 @@ document.missing_symbols.each do |symbol|
   results = CUSIP.lookup(symbol)
   File.write("assets/#{ symbol }.yaml", YAML::dump(results))
   puts "ok"
-  exit
+  #exit
   sleep 2
 end
 
 # Check if valid
-puts document.validate
+puts "Valid? #{ document.validate }"
 
 # Output
 if DESTINATION_FILE
   File.write(DESTINATION_FILE, document.to_xml)
 end
+
+puts 'Done!'

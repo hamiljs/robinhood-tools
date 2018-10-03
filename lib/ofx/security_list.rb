@@ -14,7 +14,7 @@ module OFX
           @securities.each do |_, asset|
             xml.STOCKINFO {
               xml.SECINFO {
-                xml << OFX::SecurityID.new(asset.cusip, 'CUSIP').to_xml
+                xml << OFX::SecurityID.with_ticker(asset.symbol).to_xml
                 xml.SECNAME asset.name
                 xml.TICKER asset.symbol
                 # UNITPRICE
