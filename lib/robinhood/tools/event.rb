@@ -11,7 +11,7 @@ module Robinhood
       end
 
       def id
-        Digest::SHA1.hexdigest( [ self.trade_date, self.settle_date, self.symbol, self.description, self.net_amount ].join(' '.freeze) )
+        @raw['ID'] || Digest::SHA1.hexdigest( [ self.trade_date, self.settle_date, self.symbol, self.description, self.net_amount ].join(' '.freeze) )
       end
 
       def type
